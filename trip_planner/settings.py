@@ -23,7 +23,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "trip-planner-frontend/build/static",
+    BASE_DIR / "trip-planner-frontend/dist/assets",
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -83,7 +83,7 @@ ROOT_URLCONF = 'trip_planner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "trip-planner-frontend/build"],
+        'DIRS': [BASE_DIR / "trip-planner-frontend/dist"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
