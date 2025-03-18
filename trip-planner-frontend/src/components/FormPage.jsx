@@ -26,7 +26,7 @@ function FormPage() {
   const [loading, setLoading] = useState(false);
 
   const baseUrl = process.env.NODE_ENV === 'production'
-    ? 'https://your-app-name.onrender.com'  // Replace with your Render URL
+    ? 'https://trip-planner-yphs.onrender.com/'
     : 'http://localhost:8000';
 
   const handleChange = (e) => {

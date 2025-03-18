@@ -15,14 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-# trip_planner/urls.py
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.urls import path, include
 
 urlpatterns = [
-    path('api/trip/', include('eld_trips.urls')),
-    path('', TemplateView.as_view(template_name="index.html")),  # Serve React
-    path('form', TemplateView.as_view(template_name="index.html")),  # React handles routing
+    path('api/trip/', include('eld_trips.urls')),  # API endpoint
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Catch-all for client-side routing
+from django.views.generic.base import RedirectView
+urlpatterns += [
+    path('', RedirectView.as_view(url='/', permanent=False)),  # Redirect root to ensure index.html
+    path('<path:path>', TemplateView.as_view(template_name="index.html")),
+]

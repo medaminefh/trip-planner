@@ -8,5 +8,10 @@ export default defineConfig({
   server: {
     port:
       3000
-  }
+  },
+  build: {
+    outDir: 'dist', // Ensure this matches the directory being copied
+    assetsDir: 'assets', // Default Vite assets directory
+  },
+  base: '/', // Ensure base URL is correct for deployment
 })
