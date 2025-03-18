@@ -25,9 +25,7 @@ function FormPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const baseUrl = process.env.NODE_ENV === 'production'
-    ? 'https://trip-planner-yphs.onrender.com/'
-    : 'http://localhost:8000';
+  const baseUrl = process.env.SERVER_URL
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
