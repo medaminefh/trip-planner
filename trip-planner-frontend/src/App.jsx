@@ -1,173 +1,110 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
-// Fix Leaflet marker icon issue
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import FormPage from './components/FormPage';
+import FeatureCard from './components/FeatureCard';
 
 function App() {
-  const [formData, setFormData] = useState({
-    current_location: '',
-    pickup_location: '',
-    dropoff_location: '',
-    cycle_used: '',
-  });
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setResult(null);
-    try {
-      const response = await axios.post('http://localhost:8000/api/trip/', formData);
-      setResult(response.data);
-    } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred');
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Trip Planner</h1>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/form" element={<FormPage />} />
+      </Routes>
+    </Router>
+  );
+}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Current Location</label>
-              <input
-                type="text"
-                name="current_location"
-                value={formData.current_location}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Pickup Location</label>
-              <input
-                type="text"
-                name="pickup_location"
-                value={formData.pickup_location}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Dropoff Location</label>
-              <input
-                type="text"
-                name="dropoff_location"
-                value={formData.dropoff_location}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Cycle Used (hrs)</label>
-              <input
-                type="number"
-                name="cycle_used"
-                value={formData.cycle_used}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md"
-                min="0"
-                max="70"
-                step="0.1"
-                required
-              />
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="mt-4 w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
+function LandingPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white font-sans">
+      {/* Hero Section */}
+      <header className="relative flex flex-col items-center justify-center min-h-screen text-center px-4">
+        <div className="animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">
+            Plan Your Truck Trips with Ease
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Trip Planner helps truck drivers and fleet managers create optimized routes, manage Hours of Service (HOS) compliance, and generate daily log sheets effortlessly.
+          </p>
+          <Link to="/form">
+            <button className="bg-sky-800 text-white px-6 py-3 rounded-full text-lg font-semibold cursor-pointer hover:bg-blue-700 transition-all duration-300 shadow-lg">
+              Try Me
+            </button>
+          </Link>
+        </div>
+
+        {/* Background Decorative Element */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <svg
+            className="absolute bottom-0 left-0 w-full h-auto opacity-20"
+            viewBox="0 0 1440 320"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            Plan Trip
-          </button>
-        </form>
+            <path
+              fill="#1D4ED8"
+              fillOpacity="0.1"
+              d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,192C672,203,768,213,864,202.7C960,192,1056,160,1152,149.3C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            />
+          </svg>
+        </div>
+      </header>
 
-        {/* Error */}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      {/* Features Section */}
+      <section className="py-16 px-4">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12 animate-slide-up">
+          Why Choose Trip Planner?
+        </h2>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <FeatureCard
+            title="Route Optimization"
+            description="Calculate the best routes with accurate driving times, distances, and fuel stops."
+            icon="🚚"
+          />
+          <FeatureCard
+            title="HOS Compliance"
+            description="Ensure compliance with Hours of Service regulations with automatic cycle tracking."
+            icon="📅"
+          />
+          <FeatureCard
+            title="Daily Logs"
+            description="Generate detailed daily log sheets in PDF format for each trip day."
+            icon="📜"
+          />
+        </div>
+      </section>
 
-        {/* Results */}
-        {result && (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Trip Results</h2>
+      {/* Who It's For Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12 animate-slide-up">
+          Who Is This For?
+        </h2>
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-600 mb-6">
+            Trip Planner is designed for:
+          </p>
+          <ul className="text-left max-w-md mx-auto space-y-4">
+            <li className="flex items-start">
+              <span className="text-secondary text-2xl mr-2">•</span>
+              <span>Truck drivers managing long-haul trips and HOS compliance.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-secondary text-2xl mr-2">•</span>
+              <span>Fleet managers needing to plan routes and generate logs for their drivers.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-secondary text-2xl mr-2">•</span>
+              <span>Logistics companies looking to streamline trip planning and documentation.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
 
-            {/* Route Instructions */}
-            <div className="mb-6">
-              <h3 className="text-xl font-medium">Route Instructions</h3>
-              <ol className="list-decimal list-inside mt-2">
-                {result.route_instructions.map((instr, idx) => (
-                  <li key={idx} className="text-gray-700">{instr}</li>
-                ))}
-              </ol>
-              <p className="mt-2">Total Distance: {result.total_distance.toFixed(1)} miles</p>
-              <p>Total Time: {result.total_time.toFixed(1)} hours</p>
-              <p className={result.compliance.includes('Warning') ? 'text-red-500' : 'text-green-500'}>
-                {result.compliance}
-              </p>
-            </div>
-
-            {/* Map */}
-            <div className="mb-6">
-              <h3 className="text-xl font-medium">Route Map</h3>
-              <MapContainer
-                bounds={result.coordinates}
-                style={{ height: '400px', width: '100%' }}
-                className="mt-2 rounded-md"
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                />
-                <Polyline positions={result.coordinates} color="blue" />
-                {result.coordinates.map((coord, idx) => (
-                  <Marker key={idx} position={coord}>
-                    <Popup>{idx === 0 ? 'Start' : idx === 1 ? 'Pickup' : 'Dropoff'}</Popup>
-                  </Marker>
-                ))}
-              </MapContainer>
-            </div>
-
-            {/* ELD Logs */}
-            <div>
-              <h3 className="text-xl font-medium">ELD Logs</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                {result.eld_logs.map((log) => (
-                  <div key={log.day} className="border p-4 rounded-md">
-                    <h4 className="font-semibold">Day {log.day}</h4>
-                    <p>Distance: {log.distance.toFixed(1)} miles</p>
-                    <p>Drive Time: {log.drive_time.toFixed(1)} hours</p>
-                    <p>Total Time: {log.total_time.toFixed(1)} hours</p>
-                    <img
-                      src={`http://localhost:8000${log.image}`}
-                      alt={`ELD Log Day ${log.day}`}
-                      className="mt-2 w-full rounded-md"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Footer */}
+      <footer className="py-8 text-center text-gray-600">
+        <p>&copy; 2025 Trip Planner. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

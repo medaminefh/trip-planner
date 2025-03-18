@@ -1,4 +1,3 @@
-# eld_trips/models.py
 from django.db import models
 
 class Trip(models.Model):

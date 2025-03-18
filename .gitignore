@@ -1,1 +1,13 @@
-venv
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.sqlite3
+node_modules/
+trip-planner-frontend/build/
+staticfiles/
+media/

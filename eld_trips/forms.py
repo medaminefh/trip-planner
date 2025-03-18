@@ -1,4 +1,3 @@
-# eld_trips/forms.py
 from django import forms
 from .models import Trip
 
