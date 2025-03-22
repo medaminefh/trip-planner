@@ -25,7 +25,7 @@ function FormPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const baseUrl = import.meta.env.VITE_SERVER_URL
+  const baseUrl = ''
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -22,11 +22,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('api/trip/', include('eld_trips.urls')),  # API endpoint
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', TemplateView.as_view(template_name="index.html")),  # Serve index.html directly
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Catch-all for client-side routing
-from django.views.generic.base import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='/', permanent=False)),  # Redirect root to ensure index.html
     path('<path:path>', TemplateView.as_view(template_name="index.html")),
 ]
